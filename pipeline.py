@@ -114,32 +114,13 @@ def generate_summary(df):
 
 
 def create_visualizations(df, output_dir=OUTPUT_DIR):
-    """Create and save 3 charts as PNG files.
-
-    Charts to create:
-    1. Bar chart: total revenue by product category
-    2. Line chart: daily revenue trend (aggregate revenue by date)
-    3. Horizontal bar chart: average order value by payment method
-
-    Save each chart as a PNG using fig.savefig().
-    Do NOT use plt.show() — it blocks execution in pipeline scripts.
-    Close each figure with plt.close(fig) after saving.
-
-    Args:
-        df (pd.DataFrame): Enriched DataFrame from add_features().
-        output_dir (str): Directory to save PNG files (create if needed).
-    """
+    """Create and save 3 charts as PNG files."""
+    
     # TODO: Create the output directory: os.makedirs(output_dir, exist_ok=True)
     os.makedirs(output_dir, exist_ok=True)
 
     # TODO: Chart 1 — Bar chart: total revenue by product category
-    #   - Group by 'product_category', sum 'revenue'
-    #   - fig, ax = plt.subplots(figsize=(10, 6))
-    #   - ax.bar(categories, values) or use ax.barh() for horizontal
-    #   - Set title, labels
-    #   - fig.savefig(f'{output_dir}/revenue_by_category.png', dpi=150, bbox_inches='tight')
-    #   - plt.close(fig)
-    plt.figure(figsize=(10, 6))
+    fig = plt.figure(figsize=(10, 6)) # <--- التعديل هنا
     category_revenue = df.groupby('product_category')['revenue'].sum()
     plt.bar(category_revenue.index, category_revenue.values)
     plt.title("Total Revenue by Product Category")
@@ -151,11 +132,7 @@ def create_visualizations(df, output_dir=OUTPUT_DIR):
     plt.close(fig)
 
     # TODO: Chart 2 — Line chart: daily revenue trend
-    #   - Group by 'date', sum 'revenue' — sort by date
-    #   - ax.plot(dates, revenues)
-    #   - fig.savefig(f'{output_dir}/daily_revenue_trend.png', ...)
-    #   - plt.close(fig)
-    plt.figure(figsize=(10, 6))
+    fig = plt.figure(figsize=(10, 6)) # <--- التعديل هنا
     daily_revenue = df.groupby('date')['revenue'].sum().sort_index()
     plt.plot(daily_revenue.index, daily_revenue.values)
     plt.title("Daily Revenue Trend")
@@ -167,11 +144,7 @@ def create_visualizations(df, output_dir=OUTPUT_DIR):
     plt.close(fig)
 
     # TODO: Chart 3 — Horizontal bar chart: avg order value by payment method
-    #   - Group by 'payment_method', mean 'revenue'
-    #   - ax.barh(methods, avg_values)
-    #   - fig.savefig(f'{output_dir}/avg_order_by_payment.png', ...)
-    #   - plt.close(fig)
-    plt.figure(figsize=(10, 6))
+    fig = plt.figure(figsize=(10, 6)) # <--- التعديل هنا
     avg_order_value = df.groupby('payment_method')['revenue'].mean()
     plt.barh(avg_order_value.index, avg_order_value.values)
     plt.title("Average Order Value by Payment Method")
