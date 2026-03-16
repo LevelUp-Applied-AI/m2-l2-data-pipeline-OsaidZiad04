@@ -20,11 +20,19 @@ from pipeline import load_data, clean_data, add_features
 def test_load_data_returns_dataframe():
     """load_data should return a DataFrame with expected columns and rows."""
     # TODO: Call load_data('data/sales_records.csv')
+    df = load_data('data/sales_records.csv')
     # TODO: Assert the result is a pd.DataFrame
+    assert isinstance(df, pd.DataFrame)
     # TODO: Assert len(df) > 0
+    assert len(df) > 0
     # TODO: Assert all expected columns are present:
     #        'date', 'store_id', 'product_category', 'quantity', 'unit_price', 'payment_method'
-    pass
+    assert 'date' in df.columns
+    assert 'store_id' in df.columns
+    assert 'product_category' in df.columns
+    assert 'quantity' in df.columns
+    assert 'unit_price' in df.columns
+    assert 'payment_method' in df.columns
 
 
 # ─── Test 2 ───────────────────────────────────────────────────────────────────
@@ -32,9 +40,12 @@ def test_load_data_returns_dataframe():
 def test_clean_data_no_nulls():
     """After clean_data, quantity and unit_price should have no NaN values."""
     # TODO: Load the data, then call clean_data
+    df= load_data('data/sales_records.csv')
+    cleaned = clean_data(df)
     # TODO: Assert cleaned['quantity'].isna().sum() == 0
+    assert cleaned['quantity'].isna().sum() == 0
     # TODO: Assert cleaned['unit_price'].isna().sum() == 0
-    pass
+    assert cleaned['unit_price'].isna().sum() == 0
 
 
 # ─── Test 3 ───────────────────────────────────────────────────────────────────
@@ -42,7 +53,11 @@ def test_clean_data_no_nulls():
 def test_add_features_creates_revenue():
     """add_features should add a 'revenue' column equal to quantity * unit_price."""
     # TODO: Load and clean the data, then call add_features
+    df = load_data('data/sales_records.csv')
+    df = clean_data(df)
+    df = add_features(df)
     # TODO: Assert 'revenue' in df.columns
+    assert 'revenue' in df.columns
     # TODO: Assert the revenue values equal quantity * unit_price
     #        Use pd.testing.assert_series_equal for float comparison
-    pass
+    pd.testing.assert_series_equal(df['revenue'], (df['quantity'] * df['unit_price']).rename('revenue'))
